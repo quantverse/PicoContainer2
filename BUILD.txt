@@ -1,9 +1,16 @@
 Build system: 
 
-JDK required: 1.5+
-Maven (http://maven.apache.org) required: 2.0.9+
+JDK required: 11+ (tested with 11)
+Maven (http://maven.apache.org) required: 3.9.0+
 
-Build profiles:  
+This is a hacked version to support JDK 11+ and dev version of paranamer (2.8.1-SNAPSHOT,
+https://github.com/paul-hammant/paranamer, tested with revision 1da83b82d9fdae1ffc3b76ac1f63eb4c3e1d2974).
+
+You need to clone the paranamer first and then build it and install the built packages to local maven repository:
+
+mvn install -Dmaven.test.skip=true (in paranamer dir!)
+
+Build profiles:
 
 - default: builds all releasable modules
 - reporting:  builds reports and javadoc/source attachment of artifacts
@@ -24,3 +31,38 @@ A good practice is to leave a note next to dependency declaration where it is fo
 Another option is to define a picocontainer profile with all the remote repositories needed by project and activate it on demand.
 A settings.xml template is found at http://svn.codehaus.org/picocontainer/java/2.x/trunk/pico/distribution/src/config/settings.xml.
 
+Please note the hack is not complete, building of web components / jetty / booter fails:
+
+[INFO] PicoContainer Site Resources 2.1-SNAPSHOT .......... SUCCESS [  0.556 s]
+[INFO] PicoContainer Logging 2.1-SNAPSHOT ................. SUCCESS [  0.836 s]
+[INFO] PicoContainer Parent 2.15.1-SNAPSHOT ............... SUCCESS [  0.093 s]
+[INFO] PicoContainer Core 2.15.1-SNAPSHOT ................. SUCCESS [  3.214 s]
+[INFO] PicoContainer Core (Debug) 2.15.1-SNAPSHOT ......... SUCCESS [  0.956 s]
+[INFO] PicoContainer TCK 2.15.1-SNAPSHOT .................. SUCCESS [  0.283 s]
+[INFO] PicoContainer Gems 2.15.1-SNAPSHOT ................. SUCCESS [  0.451 s]
+[INFO] PicoContainer Script 2.3-SNAPSHOT .................. SUCCESS [  0.000 s]
+[INFO] PicoContainer Script Test Model 2.3-SNAPSHOT ....... SUCCESS [  0.326 s]
+[INFO] PicoContainer Script Core 2.3-SNAPSHOT ............. SUCCESS [  0.239 s]
+[INFO] PicoContainer Script TCK 2.3-SNAPSHOT .............. SUCCESS [  0.055 s]
+[INFO] PicoContainer Script BeanShell 2.3-SNAPSHOT ........ SUCCESS [  0.050 s]
+[INFO] PicoContainer Script Groovy 2.3-SNAPSHOT ........... SUCCESS [  0.142 s]
+[INFO] PicoContainer Script JRuby 2.3-SNAPSHOT ............ SUCCESS [  0.095 s]
+[INFO] PicoContainer Script Jython 2.3-SNAPSHOT ........... SUCCESS [  0.049 s]
+[INFO] PicoContainer Script Rhino 2.3-SNAPSHOT ............ SUCCESS [  0.045 s]
+[INFO] PicoContainer Web 2.6-SNAPSHOT ..................... SUCCESS [  0.000 s]
+[INFO] PicoContainer Web Core 2.6-SNAPSHOT ................ FAILURE [  0.145 s]
+[INFO] PicoContainer Web Axis 2.6-SNAPSHOT ................ SKIPPED
+[INFO] PicoContainer Web JSF 2.6-SNAPSHOT ................. SKIPPED
+[INFO] PicoContainer Web Struts 2.6-SNAPSHOT .............. SKIPPED
+[INFO] PicoContainer Web Struts2 2.6-SNAPSHOT ............. SKIPPED
+[INFO] PicoContainer Web WebWork 2.6-SNAPSHOT ............. SKIPPED
+[INFO] PicoContainer Web WebWork2 2.6-SNAPSHOT ............ SKIPPED
+[INFO] PicoContainer Web Remoting 2.6-SNAPSHOT ............ SKIPPED
+[INFO] PicoContainer Jetty 2.1-SNAPSHOT ................... SKIPPED
+[INFO] PicoContainer Jetty Core 2.1-SNAPSHOT .............. SKIPPED
+[INFO] PicoContainer Jetty Groovy 2.1-SNAPSHOT ............ SKIPPED
+[INFO] PicoContainer Booter 2.1-SNAPSHOT .................. SKIPPED
+[INFO] PicoContainer Root 2.0-SNAPSHOT .................... SKIPPED
+
+The goal of this patched version is to provide the patched picocontainer package which works fine! Feel free to fork
+and finish this properly!
